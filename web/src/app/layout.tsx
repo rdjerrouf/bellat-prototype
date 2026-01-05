@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 
 import { Footer } from "@/components/layout/Footer";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { CartProvider } from "@/context/CartContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,13 +33,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bellat-gray-light`}
       >
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-grow pb-16 md:pb-0">{children}</main>
-          <Footer />
-        </div>
-        <BottomNav />
-        <Toaster />
+        <CartProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-grow pb-16 md:pb-0">{children}</main>
+            <Footer />
+          </div>
+          <BottomNav />
+          <Toaster />
+        </CartProvider>
       </body>
     </html>
   );

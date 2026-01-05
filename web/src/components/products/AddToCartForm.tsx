@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Product } from '@/types/product';
 import { Minus, Plus } from 'lucide-react';
+import { useCart } from '@/context/CartContext';
+import { toast } from 'sonner';
 
 // Define the props, which include the product to be added to the cart
 interface AddToCartFormProps {
@@ -13,6 +15,8 @@ interface AddToCartFormProps {
 export function AddToCartForm({ product }: AddToCartFormProps) {
   // State to manage the quantity of the product
   const [quantity, setQuantity] = useState(1);
+  // Get the addToCart function from our custom hook
+  const { addToCart } = useCart();
 
   // Function to decrease quantity, with a minimum of 1
   const decrementQuantity = () => {
@@ -24,12 +28,12 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
     setQuantity((prev) => prev + 1);
   };
 
-  // Placeholder function for when the add to cart button is clicked
+  // This function is called when the user clicks the "Add to Cart" button
   const handleAddToCart = () => {
-    // In a real implementation, this would call a function from a CartContext
-    // to add the product and quantity to the cart.
-    console.log(`Added ${quantity} of ${product.name_fr} to cart.`);
-    // Later, this will also show a toast notification.
+    // Call the addToCart function from the context to update the global cart state
+    addToCart(product, quantity);
+    // Show a success notification to the user
+    toast.success(`${quantity} x ${product.name_fr} ajouté au panier!`);
   };
 
   const totalPrice = product.price * quantity;
