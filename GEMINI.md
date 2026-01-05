@@ -3,7 +3,7 @@
 This document provides a summary and development plan based on the Functional Specification, SRS, and TODO documents for the Bellat Digital Platform prototype.
 
 Important Notes: 
-- Please provide coments with the code, it should explain what the code does for other developers.
+- Please provide comments(document it) with the code, it should explain what the code does for other developers.
 - always refer to and update TODO.md
 
 ---
