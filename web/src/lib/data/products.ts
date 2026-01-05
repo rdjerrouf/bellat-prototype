@@ -19,3 +19,9 @@ export async function getPopularProducts(limit: number = 4): Promise<Product[]> 
     const products = await getProducts();
     return products.slice(0, limit);
 }
+
+// A function to get a single product by its ID
+export async function getProductById(id: string): Promise<Product | undefined> {
+  const products = await getProducts();
+  return products.find((p) => p.id === id);
+}
