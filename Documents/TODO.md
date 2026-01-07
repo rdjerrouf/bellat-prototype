@@ -102,18 +102,18 @@
 - [x] Include B2C and B2B examples
 
 ### Product Images
-- [ ] Collect/create 20-30 product images
+- [x] Collect/create 20-30 product images
 - [ ] Optimize images (WebP format, < 100KB each)
-- [ ] Place in `/public/images/products/`
+- [x] Place in `/public/images/products/`
 - [ ] Create category hero images
 - [ ] Create placeholder image for missing products
 
 ### Utility Functions
 - [x] Create `src/lib/data/products.ts` to load product data
 - [x] Create `src/lib/data/categories.ts` to load categories
-- [ ] Create `src/lib/data/orders.ts` to load mock orders
-- [ ] Create `src/lib/utils/currency.ts` for DZD formatting
-- [ ] Create `src/lib/utils/date.ts` for date formatting
+- [x] Create `src/lib/data/orders.ts` to load mock orders
+- [x] Create `src/lib/utils/currency.ts` for DZD formatting
+- [x] Create `src/lib/utils/date.ts` for date formatting
 
 ---
 
@@ -146,7 +146,7 @@
 - [x] `Header.tsx` (Logo, search, cart, language toggle)
 - [x] `Footer.tsx` (Links, contact, social media)
 - [x] `BottomNav.tsx` (Mobile navigation bar)
-- [ ] `Container.tsx` (Responsive container wrapper)
+- [x] `Container.tsx` (Responsive container wrapper)
 
 ### TypeScript Types
 - [x] Create `src/types/product.ts`
@@ -220,8 +220,8 @@
 ### Components
 - [ ] `ProductGrid.tsx` (Responsive grid layout)
 - [ ] `ProductImage.tsx` (Optimized image component)
-- [ ] `QuantitySelector.tsx` (Increment/decrement)
-- [ ] `StockBadge.tsx` (In stock, Low stock, Out of stock)
+- [x] `QuantitySelector.tsx` (Increment/decrement)
+- [x] `StockBadge.tsx` (In stock, Low stock, Out of stock)
 
 ---
 
@@ -333,7 +333,7 @@
 - [ ] Progress indicator (Step 1/3, 2/3, 3/3)
 
 ### Components
-- [ ] `CheckoutProgress.tsx` (Step indicator)
+- [x] `CheckoutProgress.tsx` (Step indicator)
 - [ ] `AddressForm.tsx` (Form component)
 - [ ] `DeliverySlotPicker.tsx` (Date/time selector)
 - [ ] `OrderSummary.tsx` (Review component)
@@ -470,7 +470,7 @@
 
 # Week 5: Bilingual Support & Polish
 
-## Day 21-22: Internationalization (i18n)
+## Day 21-22: Internationalization (i18n) ✅ COMPLETED
 
 ### Setup i18n
 - [x] Configure `next-i18next` or `next-intl`
@@ -491,18 +491,40 @@
   - [x] Success messages
 
 ### Arabic RTL Support
-- [ ] Add RTL CSS for Arabic locale
-- [ ] Test layout mirroring (header, navigation, cards)
-- [ ] Ensure text alignment is correct
-- [ ] Fix any broken layouts in RTL
-- [ ] Test number formatting (٠١٢٣ vs 0123)
+- [x] Add RTL CSS for Arabic locale
+- [x] Test layout mirroring (header, navigation, cards)
+- [x] Ensure text alignment is correct
+- [x] Fix any broken layouts in RTL
+- [x] Test number formatting (٠١٢٣ vs 0123)
 
 ### Language Toggle
 - [x] Create `LanguageToggle.tsx` component
-- [ ] Store language preference in localStorage
+- [x] Store language preference in localStorage
 - [x] Switch locale on toggle
-- [ ] Refresh page content
-- [ ] Update document direction (dir="rtl" / "ltr")
+- [x] Refresh page content
+- [x] Update document direction (dir="rtl" / "ltr")
+
+---
+
+## Day 22-23: Image Optimization ✅ COMPLETED
+
+### Performance Optimization
+- [x] Analyze current image assets and sizes
+- [x] Configure Next.js image optimization settings
+- [x] Compress large product images (galantine.png 3.6MB → 44KB WebP)  
+- [x] Generate multiple formats (WebP, AVIF, JPEG fallbacks)
+- [x] Create responsive image sizes (400px thumbnails, 800px full)
+- [x] Implement `ResponsivePicture` component with `<picture>` element
+- [x] Add image compression script (`npm run optimize-images`)
+- [x] Update `ProductCard` to use optimized images
+- [x] Configure lazy loading with blur placeholders
+
+### Image Assets Optimized
+- [x] jambon.png: 3.5MB → 40KB WebP (99% reduction)
+- [x] galantine.png: 3.6MB → 44KB WebP (99% reduction)  
+- [x] All product images compressed with progressive JPEG fallbacks
+- [x] Generated AVIF format for modern browsers
+- [x] Created thumbnail versions for faster loading
 
 ---
 
@@ -522,11 +544,14 @@
 - [ ] Error toast: "Something went wrong"
 - [ ] Auto-dismiss after 3 seconds
 
-### Responsive Images
+### Responsive Images 🔄 CURRENT TASK
 - [ ] Use Next.js Image component for optimization
+- [ ] Convert images to modern formats (WebP/AVIF)
+- [ ] Compress existing product images
 - [ ] Lazy loading for off-screen images
 - [ ] Blur placeholder for product images
 - [ ] Proper alt text for accessibility
+- [ ] Responsive image sizes for different screen widths
 
 ### Accessibility (Basic)
 - [ ] All images have alt text

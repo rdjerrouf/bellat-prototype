@@ -7,11 +7,15 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/Card';
 import { Label } from '@/components/ui/Label';
+import { CheckoutProgress } from '@/components/checkout/CheckoutProgress';
+import { useParams } from 'next/navigation';
 
 // This is the first step of the checkout: the delivery address form.
 // It's a Client Component to handle form state and user interactions.
 export default function AddressPage() {
   const router = useRouter();
+  const params = useParams();
+  const locale = params.locale as string;
   const { address, setAddress } = useCheckout();
 
   // Form state is pre-filled with data from the context if it exists.
@@ -38,6 +42,8 @@ export default function AddressPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
+      <CheckoutProgress currentStep={1} locale={locale as 'fr' | 'ar'} />
+      
       <Card>
         <CardHeader>
           <CardTitle>Adresse de livraison</CardTitle>

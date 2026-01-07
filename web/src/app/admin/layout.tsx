@@ -1,11 +1,12 @@
 "use client";
 
+import '../globals.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { LayoutDashboard, Package, ShoppingCart, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { toast } from 'sonner';
+import { toast, Toaster } from 'sonner';
 
 // This is the layout for the admin section. It acts as a protected route
 // by checking if the user is authenticated.
@@ -16,12 +17,14 @@ export default function AdminLayout({
 }) {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Check authentication status on component mount
   useEffect(() => {
     const loggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
     setIsLoggedIn(loggedIn);
-    if (!loggedIn) {
+    setIsLoading(false);
+    if (!loggedIn && window.location.pathname !== '/admin/login') {
       // If not logged in, redirect to the admin login page
       router.replace('/admin/login');
     }
@@ -35,51 +38,84 @@ export default function AdminLayout({
     router.push('/admin/login');
   };
 
-  // If not logged in, render nothing (or a loading spinner) while redirecting
-  if (!isLoggedIn) {
+  // Show loading state during initial check
+  if (isLoading) {
     return null;
+  }
+
+  // If not logged in and on login page, show login page without sidebar
+  if (!isLoggedIn) {
+    return (
+      <>
+        {children}
+        <Toaster position="top-center" />
+      </>
+    );
   }
 
   // Render the admin dashboard layout if logged in
   return (
-    <div className="flex min-h-screen bg-bellat-gray-light">
-      {/* Sidebar Navigation */}
-      <aside className="w-64 bg-gray-dark text-white p-6 flex flex-col">
-        <h2 className="text-2xl font-bold text-bellat-red mb-8">Bellat Admin</h2>
-        <nav className="flex-grow">
-          <ul className="space-y-4">
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Modern Sidebar Navigation */}
+      <aside className="w-64 bg-white shadow-xl border-r border-gray-200 flex flex-col">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-2xl font-bold bg-linear-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+            Bellat Admin
+          </h2>
+        </div>
+        <nav className="flex-grow p-4">
+          <ul className="space-y-2">
             <li>
-              <Link href="/admin/dashboard" className="flex items-center gap-3 text-gray-300 hover:text-white">
-                <LayoutDashboard className="h-5 w-5" /> Dashboard
+              <Link href="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-700 rounded-lg transition-colors group">
+                <LayoutDashboard className="h-5 w-5 group-hover:text-green-600" /> 
+                <span className="font-medium">Dashboard</span>
               </Link>
             </li>
             <li>
-              <Link href="/admin/orders" className="flex items-center gap-3 text-gray-300 hover:text-white">
-                <ShoppingCart className="h-5 w-5" /> Commandes
+              <Link href="/admin/orders" className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-700 rounded-lg transition-colors group">
+                <ShoppingCart className="h-5 w-5 group-hover:text-green-600" /> 
+                <span className="font-medium">Commandes</span>
               </Link>
             </li>
             <li>
-              <Link href="/admin/products" className="flex items-center gap-3 text-gray-300 hover:text-white">
-                <Package className="h-5 w-5" /> Produits
+              <Link href="/admin/products" className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-700 rounded-lg transition-colors group">
+                <Package className="h-5 w-5 group-hover:text-green-600" /> 
+                <span className="font-medium">Produits</span>
               </Link>
             </li>
           </ul>
         </nav>
-        {/* Logout Button */}
-        <Button variant="secondary" onClick={handleLogout} className="w-full mt-8">
-          <LogOut className="h-5 w-5 mr-2" /> Déconnexion
-        </Button>
+        {/* Modern Logout Button */}
+        <div className="p-4 border-t border-gray-200">
+          <Button 
+            variant="outline" 
+            onClick={handleLogout} 
+            className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
+          >
+            <LogOut className="h-4 w-4 mr-2" /> Déconnexion
+          </Button>
+        </div>
       </aside>
 
       {/* Main Content Area */}
       <div className="flex-grow flex flex-col">
-        <header className="bg-white border-b p-4 flex justify-end items-center">
-          {/* Admin header content could go here, e.g., user name */}
+        <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div className="text-sm text-gray-600">
+              Administration • Bellat Platform
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="w-8 h-8 bg-linear-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                A
+              </div>
+            </div>
+          </div>
         </header>
-        <main className="flex-grow p-6">
+        <main className="flex-grow p-8 bg-gray-50">
           {children}
         </main>
       </div>
+      <Toaster position="top-center" />
     </div>
   );
 }

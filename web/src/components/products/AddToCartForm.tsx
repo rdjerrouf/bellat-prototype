@@ -3,37 +3,29 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Product } from '@/types/product';
-import { Minus, Plus } from 'lucide-react';
+import { QuantitySelector } from '@/components/products/QuantitySelector';
 import { useCart } from '@/context/CartContext';
 import { toast } from 'sonner';
 
 // Define the props, which include the product to be added to the cart
 interface AddToCartFormProps {
   product: Product;
+  locale?: string;
 }
 
-export function AddToCartForm({ product }: AddToCartFormProps) {
-  // State to manage the quantity of the product
+export function AddToCartForm({ product, locale = 'fr' }: AddToCartFormProps) {
   const [quantity, setQuantity] = useState(1);
-  // Get the addToCart function from our custom hook
   const { addToCart } = useCart();
 
-  // Function to decrease quantity, with a minimum of 1
-  const decrementQuantity = () => {
-    setQuantity((prev) => Math.max(1, prev - 1));
-  };
+  // Use locale prop for translations instead of useTranslations hook
+  const quantityText = locale === 'ar' ? 'الكمية' : 'Quantité';
+  const addToCartText = locale === 'ar' ? 'إضافة إلى السلة' : 'Ajouter au panier';
+  const addedToCartText = locale === 'ar' ? 'أضيف إلى السلة' : 'ajouté au panier';
+  const productName = locale === 'ar' ? product.name_ar : product.name_fr;
 
-  // Function to increase quantity
-  const incrementQuantity = () => {
-    setQuantity((prev) => prev + 1);
-  };
-
-  // This function is called when the user clicks the "Add to Cart" button
   const handleAddToCart = () => {
-    // Call the addToCart function from the context to update the global cart state
     addToCart(product, quantity);
-    // Show a success notification to the user
-    toast.success(`${quantity} x ${product.name_fr} ajouté au panier!`);
+    toast.success(`${quantity} x ${productName} ${addedToCartText}!`);
   };
 
   const totalPrice = product.price * quantity;
@@ -42,25 +34,22 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
     <div className="mt-6 space-y-6">
       {/* Quantity Selector */}
       <div className="flex items-center gap-4">
-        <h3 className="text-sm font-semibold">Quantité:</h3>
-        <div className="flex items-center border border-gray-300 rounded-lg">
-          <Button variant="icon" className="border-none rounded-r-none" onClick={decrementQuantity} aria-label="Decrement quantity">
-            <Minus className="h-4 w-4" />
-          </Button>
-          <span className="px-6 font-semibold">{quantity}</span>
-          <Button variant="icon" className="border-none rounded-l-none" onClick={incrementQuantity} aria-label="Increment quantity">
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
+        <h3 className="text-sm font-semibold">{quantityText}:</h3>
+        <QuantitySelector
+          value={quantity}
+          onChange={setQuantity}
+          min={1}
+          max={99}
+        />
       </div>
 
       {/* Add to Cart Button */}
       <Button
         variant="primary"
-        className="w-full"
+        className="w-full transition-all duration-200 active:scale-95 hover:shadow-lg"
         onClick={handleAddToCart}
       >
-        Ajouter au panier - {totalPrice} DZD
+        {addToCartText} - {totalPrice} DZD
       </Button>
     </div>
   );

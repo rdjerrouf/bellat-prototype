@@ -20,8 +20,8 @@ export interface DeliverySlot {
 interface CheckoutContextType {
   address: DeliveryAddress | null;
   slot: DeliverySlot | null;
-  setAddress: (address: DeliveryAddress) => void;
-  setSlot: (slot: DeliverySlot) => void;
+  setAddress: (address: DeliveryAddress | null) => void;
+  setSlot: (slot: DeliverySlot | null) => void;
 }
 
 // 3. Create the React Context
@@ -52,15 +52,23 @@ export function CheckoutProvider({ children }: CheckoutProviderProps) {
   }, []);
 
   // Function to update the address state and save it to sessionStorage
-  const setAddress = (newAddress: DeliveryAddress) => {
+  const setAddress = (newAddress: DeliveryAddress | null) => {
     setAddressState(newAddress);
-    sessionStorage.setItem('checkout_address', JSON.stringify(newAddress));
+    if (newAddress === null) {
+      sessionStorage.removeItem('checkout_address');
+    } else {
+      sessionStorage.setItem('checkout_address', JSON.stringify(newAddress));
+    }
   };
 
   // Function to update the delivery slot state and save it to sessionStorage
-  const setSlot = (newSlot: DeliverySlot) => {
+  const setSlot = (newSlot: DeliverySlot | null) => {
     setSlotState(newSlot);
-    sessionStorage.setItem('checkout_slot', JSON.stringify(newSlot));
+    if (newSlot === null) {
+      sessionStorage.removeItem('checkout_slot');
+    } else {
+      sessionStorage.setItem('checkout_slot', JSON.stringify(newSlot));
+    }
   };
 
   // The value provided to consuming components

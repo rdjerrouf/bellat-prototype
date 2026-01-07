@@ -6,15 +6,20 @@ import { Button } from '@/components/ui/Button';
 
 // Define the props for the page, which include the dynamic route parameters.
 // The `category` param comes from the folder name `[category]`.
+// In Next.js 15+, params is a Promise
 type CategoryPageProps = {
-  params: {
+  params: Promise<{
     category: string;
-  };
+    locale: string;
+  }>;
 };
 
 // This is a dynamic page that displays products for a specific category.
 // It's a React Server Component, so we can fetch data directly on the server.
 export default async function CategoryPage({ params }: CategoryPageProps) {
+  // In Next.js 15+, params is async and must be awaited
+  const resolvedParams = await params;
+
   // Fetch products and categories data in parallel for better performance.
   const [products, categories] = await Promise.all([
     getProducts(),
@@ -22,7 +27,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   ]);
 
   // Find the current category object based on the ID from the URL.
-  const currentCategory = categories.find((c) => c.id === params.category);
+  const currentCategory = categories.find((c) => c.id === resolvedParams.category);
 
   // If the category ID from the URL is not a valid category, show a 404 page.
   if (!currentCategory) {
@@ -31,7 +36,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   // Filter the full product list to get only those belonging to the current category.
   const categoryProducts = products.filter(
-    (p) => p.category === params.category
+    (p) => p.category === resolvedParams.category
   );
 
   return (
@@ -64,7 +69,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       {categoryProducts.length > 0 ? (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {categoryProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} locale={resolvedParams.locale} />
           ))}
         </div>
       ) : (

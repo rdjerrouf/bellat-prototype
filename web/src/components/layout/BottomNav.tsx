@@ -1,16 +1,20 @@
+"use client"; // This must be a client component to use useTranslations
+
 import Link from 'next/link';
 import { Home, LayoutGrid, Search, ShoppingCart, User } from 'lucide-react';
+import { useTranslations } from 'next-intl'; // Import useTranslations
+import { usePathname } from 'next/navigation'; // To highlight active link
 
 export function BottomNav() {
-  // Placeholder for active link styling
-  const activePath = '/'; 
+  const t = useTranslations('Common'); // Initialize translations for the 'Common' namespace
+  const pathname = usePathname(); // Get current path for active link styling
 
   const navItems = [
-    { href: '/', label: 'Accueil', icon: Home },
-    { href: '/categories', label: 'Catégories', icon: LayoutGrid },
-    { href: '/search', label: 'Recherche', icon: Search },
-    { href: '/cart', label: 'Panier', icon: ShoppingCart },
-    { href: '/profile', label: 'Profil', icon: User },
+    { href: '/', label: t('Home'), icon: Home },
+    { href: '/categories', label: t('Categories'), icon: LayoutGrid },
+    { href: '/search', label: t('Search'), icon: Search },
+    { href: '/cart', label: t('Panier'), icon: ShoppingCart },
+    { href: '/profile', label: t('Profile'), icon: User },
   ];
 
   return (

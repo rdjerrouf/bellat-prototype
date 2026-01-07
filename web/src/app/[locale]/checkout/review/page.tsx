@@ -6,10 +6,12 @@ import { useCart } from '@/context/CartContext';
 import { useCheckout } from '@/context/CheckoutContext';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/Card';
+import { useLocale } from 'next-intl';
 
 // This is the final step of the checkout: the Order Review page.
 export default function ReviewPage() {
   const router = useRouter();
+  const locale = useLocale();
   const { cartItems, clearCart } = useCart();
   const { address, slot, setAddress, setSlot } = useCheckout(); // Get setters to clear state
 
@@ -33,13 +35,13 @@ export default function ReviewPage() {
   // This function is called when the user confirms their order.
   const handleConfirmOrder = () => {
     // In a real application, this is where you would send the order to your backend API.
-    console.log('Order confirmed:', { address, slot, cartItems, total });
-    
+    // For the prototype, we simply clear the cart and redirect to success page.
+
     // After "placing" the order, clear the cart and the checkout session state.
     clearCart();
     setAddress(null);
     setSlot(null);
-    
+
     // Redirect the user to the order success page.
     router.push('/order-success');
   };
@@ -80,7 +82,7 @@ export default function ReviewPage() {
             <ul className="text-sm text-gray-600 mt-2 space-y-1">
               {cartItems.map(item => (
                 <li key={item.id} className="flex justify-between">
-                  <span>{item.name} x{item.quantity}</span>
+                  <span>{locale === 'ar' ? item.name_ar : item.name_fr} x{item.quantity}</span>
                   <span>{item.price * item.quantity} DZD</span>
                 </li>
               ))}

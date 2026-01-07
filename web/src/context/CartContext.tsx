@@ -12,6 +12,9 @@ interface CartContextType {
   updateQuantity: (productId: string, newQuantity: number) => void;
   clearCart: () => void;
   itemCount: number;
+  subtotal: number;
+  total: number;
+  getTotalQuantityForProduct: (productId: string) => number;
 }
 
 // 2. Create the context with a default undefined value
@@ -59,10 +62,12 @@ export function CartProvider({ children }: CartProviderProps) {
         // If item doesn't exist, add it to the cart
         const newItem: CartItem = {
           id: product.id,
-          name: product.name_fr, // Assuming 'fr' for now
+          name_fr: product.name_fr,
+          name_ar: product.name_ar,
           image: product.image,
           price: product.price,
           quantity: quantity,
+          unit: product.unit,
         };
         return [...prevItems, newItem];
       }
@@ -96,6 +101,18 @@ export function CartProvider({ children }: CartProviderProps) {
   // Calculate the total number of items in the cart
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
+  // Calculate subtotal (sum of all item prices * quantities)
+  const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+
+  // Calculate total (for now, same as subtotal - could add shipping, tax, etc.)
+  const total = subtotal;
+
+  // Get total quantity for a specific product
+  const getTotalQuantityForProduct = (productId: string) => {
+    const item = cartItems.find((item) => item.id === productId);
+    return item ? item.quantity : 0;
+  };
+
   // 5. Provide the state and functions to children
   const value = {
     cartItems,
@@ -104,6 +121,9 @@ export function CartProvider({ children }: CartProviderProps) {
     updateQuantity,
     clearCart,
     itemCount,
+    subtotal,
+    total,
+    getTotalQuantityForProduct,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

@@ -1,8 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { getMockOrders } from '@/lib/data/mock-orders';
 import Link from 'next/link';
-import { format } from 'date-fns'; // For date formatting
-import { Badge } from '@/components/ui/Badge'; // Assuming Badge component is available
+import { format } from 'date-fns';
+import { Badge } from '@/components/ui/Badge';
+import { ShoppingCart, DollarSign, Clock, TrendingUp } from 'lucide-react';
 
 // This is the Admin Dashboard page. It's a Server Component that fetches
 // mock data to display an overview of the platform's activity.
@@ -47,83 +48,134 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Tableau de bord</h1>
+      {/* Header with gradient */}
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
+        <p className="text-gray-600">Vue d'ensemble de votre activité</p>
+      </div>
 
-      {/* Top Stats Cards: Displaying key metrics */}
+      {/* Modern Stats Cards with icons and gradients */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Commandes aujourd'hui</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{ordersToday}</p>
+        {/* Orders Card */}
+        <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-blue-500/10 to-transparent rounded-bl-[100px]"></div>
+          <CardContent className="p-6 relative">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-2">Commandes aujourd'hui</p>
+                <p className="text-4xl font-bold text-gray-900">{ordersToday}</p>
+                <div className="flex items-center gap-1 mt-2 text-green-600 text-sm font-medium">
+                  <TrendingUp className="h-4 w-4" />
+                  <span>+12% vs hier</span>
+                </div>
+              </div>
+              <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                <ShoppingCart className="h-6 w-6 text-white" />
+              </div>
+            </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Revenus aujourd'hui</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{revenueToday} DZD</p>
+
+        {/* Revenue Card */}
+        <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-green-500/10 to-transparent rounded-bl-[100px]"></div>
+          <CardContent className="p-6 relative">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-2">Revenus aujourd'hui</p>
+                <p className="text-4xl font-bold text-gray-900">{revenueToday.toLocaleString()}</p>
+                <p className="text-sm text-gray-500 mt-2">DZD</p>
+              </div>
+              <div className="w-12 h-12 bg-linear-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
+                <DollarSign className="h-6 w-6 text-white" />
+              </div>
+            </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Commandes en attente</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{pendingOrders}</p>
+
+        {/* Pending Orders Card */}
+        <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-br from-amber-500/10 to-transparent rounded-bl-[100px]"></div>
+          <CardContent className="p-6 relative">
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600 mb-2">Commandes en attente</p>
+                <p className="text-4xl font-bold text-gray-900">{pendingOrders}</p>
+                <p className="text-sm text-amber-600 mt-2 font-medium">Nécessite attention</p>
+              </div>
+              <div className="w-12 h-12 bg-linear-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Clock className="h-6 w-6 text-white" />
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Orders Section: Displaying a table of the most recent orders */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Commandes récentes</CardTitle>
+      {/* Modern Recent Orders Table */}
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="border-b bg-linear-to-r from-gray-50 to-white px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-xl font-bold text-gray-900">Commandes récentes</CardTitle>
+              <p className="text-sm text-gray-600 mt-1">Dernières transactions de vos clients</p>
+            </div>
+            <Link
+              href="/admin/orders"
+              className="text-green-600 hover:text-green-700 text-sm font-medium transition-colors"
+            >
+              Voir tout →
+            </Link>
+          </div>
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full">
+              <thead className="bg-gray-50/50">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    N°
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    N° Commande
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     Client
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     Date
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Total
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Montant
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                     Statut
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {recentOrders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {/* Link to order detail page (non-functional in prototype) */}
-                      <Link href={`/admin/orders/${order.id}`} className="text-bellat-red hover:underline">
+              <tbody className="bg-white divide-y divide-gray-100">
+                {recentOrders.map((order, index) => (
+                  <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <Link
+                        href={`/admin/orders/${order.id}`}
+                        className="text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
+                      >
                         {order.id}
                       </Link>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {order.customer_name}
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="w-10 h-10 rounded-full bg-linear-to-br from-gray-200 to-gray-300 flex items-center justify-center mr-3 text-gray-700 font-semibold text-sm">
+                          {order.customer_name.charAt(0)}
+                        </div>
+                        <span className="text-sm font-medium text-gray-900">{order.customer_name}</span>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-600">
                       {format(new Date(order.date), 'dd/MM/yyyy')}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {order.total} DZD
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <span className="text-sm font-semibold text-gray-900">{order.total.toLocaleString()} DZD</span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <Badge variant={getStatusVariant(order.status)}>
+                    <td className="px-6 py-5 whitespace-nowrap">
+                      <Badge variant={getStatusVariant(order.status)} className="font-medium">
                         {translateStatus(order.status)}
                       </Badge>
                     </td>

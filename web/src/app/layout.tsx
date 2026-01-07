@@ -1,48 +1,15 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "@/components/ui/Toast";
-import { Header } from "@/components/layout/Header";
+import type { ReactNode } from 'react';
 
-import { Footer } from "@/components/layout/Footer";
-import { BottomNav } from "@/components/layout/BottomNav";
-import { CartProvider } from "@/context/CartContext";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Bellat Prototype",
-  description: "Digital Ordering Platform Prototype for Bellat Group",
+export const metadata = {
+  title: 'Bellat - Traditional Algerian Products',
+  description: 'Discover authentic Algerian products and traditional crafts.',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bellat-gray-light`}
-      >
-        <CartProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-grow pb-16 md:pb-0">{children}</main>
-            <Footer />
-          </div>
-          <BottomNav />
-          <Toaster />
-        </CartProvider>
-      </body>
-    </html>
-  );
+}: {
+  children: ReactNode;
+}) {
+  // Just pass through - locale layout will handle html/body
+  return children;
 }

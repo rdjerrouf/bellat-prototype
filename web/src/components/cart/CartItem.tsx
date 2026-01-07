@@ -6,6 +6,7 @@ import { CartItem as CartItemType } from '@/types/cart';
 import { useCart } from '@/context/CartContext';
 import { Button } from '@/components/ui/Button';
 import { Minus, Plus, Trash2 } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 
 // Define the props, which is a single cart item
 interface CartItemProps {
@@ -15,25 +16,30 @@ interface CartItemProps {
 export function CartItem({ item }: CartItemProps) {
   // Get the functions to modify the cart from the context
   const { updateQuantity, removeFromCart } = useCart();
+  const locale = useLocale();
+  const t = useTranslations('Common');
+  
+  // Get the localized product name
+  const productName = locale === 'ar' ? item.name_ar : item.name_fr;
 
   return (
     <div className="flex items-center gap-4 py-4 border-b">
       {/* Product Image */}
-      <div className="relative h-24 w-24 flex-shrink-0">
+      <div className="relative h-24 w-24 shrink-0">
         <Image
           src={item.image}
-          alt={item.name}
+          alt={productName}
           fill
           className="object-cover rounded-md"
         />
       </div>
 
       {/* Item Details */}
-      <div className="flex-grow">
+      <div className="grow">
         <Link href={`/products/${item.id}`} className="font-semibold hover:underline">
-          {item.name}
+          {productName}
         </Link>
-        <p className="text-sm text-gray-500">{item.price} DZD</p>
+        <p className="text-sm text-gray-500">{item.price} {t('Currency')} / {item.unit}</p>
         
         {/* Quantity Controls */}
         <div className="flex items-center gap-2 mt-2">
