@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 // 1. Define the shapes of the data we'll store during checkout
 export interface DeliveryAddress {
@@ -33,23 +33,34 @@ interface CheckoutProviderProps {
 }
 
 export function CheckoutProvider({ children }: CheckoutProviderProps) {
-  const [address, setAddressState] = useState<DeliveryAddress | null>(null);
-  const [slot, setSlotState] = useState<DeliverySlot | null>(null);
-
-  // On initial render, load state from sessionStorage.
+  // On initial render, load state from sessionStorage using lazy initialization.
   // sessionStorage is used because checkout data is temporary and should be cleared
   // when the user closes the browser tab.
-  useEffect(() => {
+  const [address, setAddressState] = useState<DeliveryAddress | null>(() => {
+    if (typeof window === 'undefined') {
+      return null;
+    }
     try {
       const storedAddress = sessionStorage.getItem('checkout_address');
-      if (storedAddress) setAddressState(JSON.parse(storedAddress));
-
-      const storedSlot = sessionStorage.getItem('checkout_slot');
-      if (storedSlot) setSlotState(JSON.parse(storedSlot));
+      if (storedAddress) return JSON.parse(storedAddress);
     } catch (error) {
-      console.error("Failed to parse checkout state from sessionStorage", error);
+      console.error("Failed to parse checkout address from sessionStorage", error);
     }
-  }, []);
+    return null;
+  });
+
+  const [slot, setSlotState] = useState<DeliverySlot | null>(() => {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    try {
+      const storedSlot = sessionStorage.getItem('checkout_slot');
+      if (storedSlot) return JSON.parse(storedSlot);
+    } catch (error) {
+      console.error("Failed to parse checkout slot from sessionStorage", error);
+    }
+    return null;
+  });
 
   // Function to update the address state and save it to sessionStorage
   const setAddress = (newAddress: DeliveryAddress | null) => {

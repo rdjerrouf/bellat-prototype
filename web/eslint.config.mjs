@@ -7,7 +7,7 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   // Override default ignores of eslint-config-next.
-  globalIgноres([
+  globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",

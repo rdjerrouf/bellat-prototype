@@ -27,20 +27,21 @@ interface CartProviderProps {
 
 // 4. Create the CartProvider component
 export function CartProvider({ children }: CartProviderProps) {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-
-  // On initial load, try to get the cart from localStorage
-  useEffect(() => {
+  // On initial load, try to get the cart from localStorage using lazy initialization
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    if (typeof window === 'undefined') {
+      return [];
+    }
     try {
       const storedCart = localStorage.getItem('bellat_cart');
       if (storedCart) {
-        setCartItems(JSON.parse(storedCart));
+        return JSON.parse(storedCart);
       }
     } catch (error) {
       console.error("Failed to parse cart from localStorage", error);
-      setCartItems([]);
     }
-  }, []);
+    return [];
+  });
 
   // Whenever the cartItems state changes, save it to localStorage
   useEffect(() => {

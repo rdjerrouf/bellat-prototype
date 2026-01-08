@@ -51,7 +51,7 @@ export default async function AdminDashboardPage() {
       {/* Header with gradient */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Tableau de bord</h1>
-        <p className="text-gray-600">Vue d'ensemble de votre activité</p>
+        <p className="text-gray-600">Vue d&apos;ensemble de votre activité</p>
       </div>
 
       {/* Modern Stats Cards with icons and gradients */}
@@ -62,7 +62,7 @@ export default async function AdminDashboardPage() {
           <CardContent className="p-6 relative">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-2">Commandes aujourd'hui</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">Commandes aujourd&apos;hui</p>
                 <p className="text-4xl font-bold text-gray-900">{ordersToday}</p>
                 <div className="flex items-center gap-1 mt-2 text-green-600 text-sm font-medium">
                   <TrendingUp className="h-4 w-4" />
@@ -82,7 +82,7 @@ export default async function AdminDashboardPage() {
           <CardContent className="p-6 relative">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-2">Revenus aujourd'hui</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">Revenus aujourd&apos;hui</p>
                 <p className="text-4xl font-bold text-gray-900">{revenueToday.toLocaleString()}</p>
                 <p className="text-sm text-gray-500 mt-2">DZD</p>
               </div>

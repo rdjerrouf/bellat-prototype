@@ -16,35 +16,38 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
-  // Check authentication status on component mount
-  useEffect(() => {
+  // Check authentication status using lazy initialization
+  const [authState, setAuthState] = useState(() => {
+    if (typeof window === 'undefined') {
+      return { isLoggedIn: false, isLoading: true };
+    }
     const loggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
-    setIsLoggedIn(loggedIn);
-    setIsLoading(false);
-    if (!loggedIn && window.location.pathname !== '/admin/login') {
-      // If not logged in, redirect to the admin login page
+    return { isLoggedIn: loggedIn, isLoading: false };
+  });
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !authState.isLoggedIn && window.location.pathname !== '/admin/login') {
       router.replace('/admin/login');
     }
-  }, [router]);
+  }, [authState.isLoggedIn, router]);
 
   // Handle admin logout
   const handleLogout = () => {
     localStorage.removeItem('isAdminLoggedIn');
-    setIsLoggedIn(false);
+    setAuthState({ isLoggedIn: false, isLoading: false });
     toast.info('Déconnexion réussie.');
     router.push('/admin/login');
   };
 
   // Show loading state during initial check
-  if (isLoading) {
+  if (authState.isLoading) {
     return null;
   }
 
   // If not logged in and on login page, show login page without sidebar
-  if (!isLoggedIn) {
+  if (!authState.isLoggedIn) {
     return (
       <>
         {children}
@@ -87,9 +90,9 @@ export default function AdminLayout({
         </nav>
         {/* Modern Logout Button */}
         <div className="p-4 border-t border-gray-200">
-          <Button 
-            variant="outline" 
-            onClick={handleLogout} 
+          <Button
+            variant="secondary"
+            onClick={handleLogout}
             className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
           >
             <LogOut className="h-4 w-4 mr-2" /> Déconnexion
