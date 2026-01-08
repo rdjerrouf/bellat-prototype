@@ -66,7 +66,7 @@ export default function AdminLayout({
             Bellat Admin
           </h2>
         </div>
-        <nav className="flex-grow p-4">
+        <nav className="grow p-4">
           <ul className="space-y-2">
             <li>
               <Link href="/admin/dashboard" className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-700 rounded-lg transition-colors group">
@@ -101,7 +101,7 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-grow flex flex-col">
+      <div className="grow flex flex-col">
         <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="text-sm text-gray-600">
@@ -114,7 +114,7 @@ export default function AdminLayout({
             </div>
           </div>
         </header>
-        <main className="flex-grow p-8 bg-gray-50">
+        <main className="grow p-8 bg-gray-50">
           {children}
         </main>
       </div>
