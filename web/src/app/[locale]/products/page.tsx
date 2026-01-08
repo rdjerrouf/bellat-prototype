@@ -74,7 +74,7 @@ export default function ProductsPage() {
       {/* Category Filter Buttons */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-4">
-          <span className="font-semibold">
+          <span className="font-semibold text-gray-900">
             {locale === 'ar' ? 'تصفية حسب:' : 'Filtrer par:'}
           </span>
         </div>
@@ -82,7 +82,9 @@ export default function ProductsPage() {
           <Button
             variant={selectedCategory === null ? 'primary' : 'secondary'}
             onClick={() => setSelectedCategory(null)}
-            className="min-h-0 h-10 px-4 py-2 text-sm"
+            className={`min-h-0 h-10 px-4 py-2 text-sm ${
+              selectedCategory === null ? '' : 'text-gray-900 border-gray-300 hover:bg-gray-100'
+            }`}
           >
             {locale === 'ar' ? 'الكل' : 'Tout'} ({products.length})
           </Button>
@@ -93,7 +95,9 @@ export default function ProductsPage() {
                 key={category.id}
                 variant={selectedCategory === category.id ? 'primary' : 'secondary'}
                 onClick={() => setSelectedCategory(category.id)}
-                className="min-h-0 h-10 px-4 py-2 text-sm"
+                className={`min-h-0 h-10 px-4 py-2 text-sm ${
+                  selectedCategory === category.id ? '' : 'text-gray-900 border-gray-300 hover:bg-gray-100'
+                }`}
               >
                 {locale === 'ar' ? category.name_ar : category.name_fr} ({count})
               </Button>
